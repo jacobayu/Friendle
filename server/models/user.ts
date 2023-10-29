@@ -8,4 +8,6 @@ const userSchema = new mongoose.Schema({
     friends:[{type: mongoose.Schema.Types.ObjectId, ref: 'User'}]
   });
 
-const Quiz = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+
+module.exports = User

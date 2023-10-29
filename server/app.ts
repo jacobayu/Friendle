@@ -18,6 +18,8 @@ mongoose.connect(config.db.uri, {
 
 // TODO: Add routes
 
+app.use("/api/users", require("./routes/user"));
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
