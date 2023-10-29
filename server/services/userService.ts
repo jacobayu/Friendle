@@ -1,4 +1,5 @@
 const User = require("../models/user");
+
 /**
  * Returns an array of all users
  */

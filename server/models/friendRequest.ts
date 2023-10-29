@@ -8,4 +8,5 @@ const requestSchema = new mongoose.Schema({
     dateResponded: Date,
   });
 
-const Answer = mongoose.model('FriendRequest', requestSchema);
+const FriendRequest = mongoose.model('FriendRequest', requestSchema);
+module.exports = FriendRequest

@@ -17,3 +17,4 @@ const pairSchema = new mongoose.Schema({
 });
 
 const Pair = mongoose.model('Pair', pairSchema);
+module.exports = Pair

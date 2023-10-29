@@ -18,7 +18,12 @@ mongoose.connect(config.db.uri, {
 
 // TODO: Add routes
 
-app.use("/api/users", require("./routes/user"));
+app.use("/api/user", require("./routes/user"));
+app.use("/api/answer", require("./routes/answer"));
+app.use("/api/friendRequest", require("./routes/friendRequest"));
+app.use("/api/pair", require("./routes/pair"));
+app.use("/api/question", require("./routes/question"));
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
