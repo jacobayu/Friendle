@@ -5,7 +5,12 @@ import terser from '@rollup/plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import css from 'rollup-plugin-css-only';
-
+import sveltePreprocess from 'svelte-preprocess';
+import typescript from '@rollup/plugin-typescript';
+import json from "@rollup/plugin-json";
+import {config} from 'dotenv';
+import replace from '@rollup/plugin-replace';
+config();
 const production = !process.env.ROLLUP_WATCH;
 
 function serve() {
@@ -30,7 +35,7 @@ function serve() {
 }
 
 export default {
-	input: 'src/main.js',
+	input: 'src/main.ts',
 	output: {
 		sourcemap: true,
 		format: 'iife',
@@ -39,6 +44,7 @@ export default {
 	},
 	plugins: [
 		svelte({
+			preprocess: sveltePreprocess({ sourceMap: !production }),
 			compilerOptions: {
 				// enable run-time checks when not in production
 				dev: !production
@@ -59,6 +65,16 @@ export default {
 			exportConditions: ['svelte']
 		}),
 		commonjs(),
+		typescript({
+			sourceMap: !production,
+			inlineSources: !production
+		}),
+		json(),
+		replace({
+			// stringify the object       
+			'process.env.GOOGLE_CLIENT_ID': JSON.stringify(process.env.GOOGLE_CLIENT_ID),
+      		preventAssignment: true,
+		  }),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
