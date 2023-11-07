@@ -9,6 +9,11 @@ const port = config.app.port || 3000;
 
 // Middlewares
 app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:8080' // Replace with your front-end app's URL
+}));
+
 app.use(express.json());
 
 // MongoDB Connection

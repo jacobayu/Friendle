@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@rollup/plugin-json": "^6.0.1",
+    "jwt-decode": "^4.0.0",
     "sirv-cli": "^2.0.0"
   }
 }

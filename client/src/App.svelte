@@ -1,5 +1,5 @@
 <script>
-	import GoogleSignIn from './google-sign-in.svelte'
+	import GoogleSignIn from './components/google-sign-in.svelte'
 </script>
 
 <main>

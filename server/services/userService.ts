@@ -15,6 +15,18 @@ async function getUser(userId: any) {
   return User.findById(userId).exec();
 }
 
+async function getUsersByParams(params: any) {
+  console.log('Searching for users with params:', params);
+  try {
+    // Make sure you're querying the 'email' field, not '_id'
+    const users = await User.find(params);
+    return users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error; // Throw the error to be caught by the try-catch in the route
+  }
+}
+
 /**
  * Create a user profile
  * @param newUser - new User information
@@ -67,4 +79,5 @@ module.exports = {
   updateUser,
   addFriend,
   removeFriend,
+  getUsersByParams,
 };
