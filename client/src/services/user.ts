@@ -1,17 +1,11 @@
-export async function createUser(data){
+export async function createUser(data: any){
     try {
-        const name = data.split(' ')
-        const firstName = name[0]
-        const lastName = name[name.length - 1]
         const res = await fetch('http://localhost:8000/api/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: data.email,
-                firstName: firstName,
-                lastName: lastName,
-                friends: [] })
+            body: JSON.stringify(data)
         });
 
         if (res.ok) {
@@ -26,7 +20,7 @@ export async function createUser(data){
     }
 };
 
-export async function getUserByEmail(email){
+export async function getUserByEmail(email:any){
     try {
         console.log(email)
         const res = await fetch(`http://localhost:8000/api/user/query?email=${email}`, {
