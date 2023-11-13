@@ -1,12 +1,19 @@
 <script>
     import { user } from '../../store';
     import { onMount } from 'svelte';
+    import Button from '../../lib/button.svelte'
+
     let user_value = {}
     onMount(() =>{
       user.subscribe((u) => {
       user_value = u;
       });
     });
+
+    const onClick = () => {
+      console.log("clicked")
+    }
+
 </script>
   
   <style>
@@ -41,14 +48,7 @@
       padding: 20px;
       border-radius: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-  
-    .player {
-      background-color: black;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-    }
+    } 
   
     .vs {
       margin: 0 20px;
@@ -71,9 +71,8 @@
   <div class="container">
     <div class="header">Question</div>
     <div class="match-container">
-      <div class="player">YOU</div>
+      <Button text="You" func={onClick}></Button>
       <div class="vs">VS</div>
-      <div class="player">LUCY</div>
+      <Button text="Lucy" func={onClick}></Button>
     </div>
-    <div>{user_value.firstName}</div>
   </div>
