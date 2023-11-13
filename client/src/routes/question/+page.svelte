@@ -3,6 +3,8 @@
     import { onMount } from 'svelte';
     import Button from '../../lib/button.svelte'
 
+    let question = "Who is smarter?"
+
     let user_value = {}
     onMount(() =>{
       user.subscribe((u) => {
@@ -21,58 +23,54 @@
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
-  
     .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f4f4f8;
+      position: relative; /* This will be the anchor for the absolute positioning of header */
+      height: 100vh; /* Adjust height as needed */
     }
   
     .header {
+      position: absolute;
+      top: 10%; /* Adjust this value to position the header as desired */
+      left: 50%;
+      transform: translateX(-50%);
       background-color: white;
-      padding: 10px 20px;
-      margin-bottom: 20px;
+      padding: 20px 20px;
       font-size: 24px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-  
-    .match-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #e8e8e8;
-      padding: 20px;
       border-radius: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    } 
-  
-    .vs {
-      margin: 0 20px;
-      color: #333;
-      font-size: 24px;
+      text-align: center;
+      z-index: 10;
+      width:60%;
     }
-  
-    .half-background {
-      background: linear-gradient(to right, #3b8ef3 50%, #fff168 50%);
-      position: absolute;
-      width: 100%;
+
+    .left-half, .right-half {
+      width: 50%;
       height: 100%;
-      top: 0;
-      left: 0;
-      z-index: -1;
+      position: fixed; /* Keeps divs full height even when scrolling */
+      display: flex; /* Enables flexbox */
+      justify-content: center; /* Centers horizontally */
+      align-items: center;
     }
-  </style>
+
+    .left-half {
+      left: 0;
+      background-color: #8DA5E2; /* Replace with your preferred color */
+    }
+
+    .right-half {
+      right: 0;
+      background-color: #FFF6A1; /* Replace with your preferred color */
+    }
   
-  <div class="half-background"></div>
-  <div class="container">
-    <div class="header">Question</div>
-    <div class="match-container">
-      <Button text="You" func={onClick}></Button>
-      <div class="vs">VS</div>
-      <Button text="Lucy" func={onClick}></Button>
-    </div>
+</style>
+<div class="container">
+  <div class="header">{question}</div>
+  <div class="left-half">
+    <Button text="YOU" func={onClick}></Button>
   </div>
+  <div class="right-half">
+    <Button text="LUCY" func={onClick}></Button>
+  </div>  
+</div>
+
+  

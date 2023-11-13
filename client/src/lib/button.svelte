@@ -11,7 +11,7 @@
   
   <style>
     .custom-button {
-      padding: 10px 20px;
+      padding: 20px 20px;
       background-color: black;
       border: none;
       border-radius: 10px;
@@ -19,6 +19,7 @@
       font-size: 20px;
       transition: background-color 0.3s ease;
       box-shadow: 5px 5px 4px 0px rgba(0, 0, 0, 0.25);
+      width:50%;
     }
   
     .custom-button:hover {

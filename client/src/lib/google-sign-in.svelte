@@ -11,6 +11,7 @@
      * @type {any}
   */
   let user_value;
+  let unsubscribe = user.subscribe((u) => (user_value = u))
 
   onMount(() => {
     user.subscribe((u) => {
@@ -75,6 +76,8 @@
         goto('/question')
       }
   }
+
+  onDestroy(unsubscribe)
 </script>
 
 <div id="buttonDiv"></div>
