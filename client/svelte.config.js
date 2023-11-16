@@ -27,11 +27,16 @@
 import adapter from '@sveltejs/adapter-auto';
 import preprocess from 'svelte-preprocess';
 
+const dev = process.argv.includes('dev');
+
 const config = {
   preprocess: preprocess(),
 
   kit: {
     adapter: adapter(),
+    files: {
+      assets: 'static' // This tells SvelteKit where to look for static assets.
+    },
     // ... other kit options
   },
 

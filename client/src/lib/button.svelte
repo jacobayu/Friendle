@@ -16,7 +16,7 @@
       border: none;
       border-radius: 10px;
       color: white;
-      font-size: 20px;
+      font-size: 40px;
       transition: background-color 0.3s ease;
       box-shadow: 5px 5px 4px 0px rgba(0, 0, 0, 0.25);
       width:50%;
