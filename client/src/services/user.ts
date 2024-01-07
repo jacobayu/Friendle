@@ -31,8 +31,6 @@ export async function getUserByEmail(email:any){
         });
         if (res.ok) {
             const user = await res.json();
-            console.log("User Already Exists")
-            console.log('in api: ' ,user)
             return user
         } else {
             console.error('Error from backend', res);

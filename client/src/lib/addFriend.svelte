@@ -16,6 +16,11 @@
       // For example:
       // addFriendByEmail(email).then(() => closeModal());
       const friendRequest = await sendRequest(email, user_value.email);
+      if(friendRequest == undefined){
+        alert("Email not found with an account")
+        return
+      }
+      alert("friend request successfully sent")
       closeModal();
     }
 

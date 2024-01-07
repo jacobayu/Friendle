@@ -3,6 +3,11 @@ export async function sendRequest(to: any, from:any){
     try {
         const toUser = await getUserByEmail(to);
         const fromUser = await getUserByEmail(from)
+        console.log(toUser)
+        console.log(fromUser)
+        if(toUser.length == 0){
+            return undefined
+        }
         const body = {
             fromID: fromUser._id,
             toID: toUser._id,
