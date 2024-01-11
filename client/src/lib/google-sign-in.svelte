@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import {createUser, getUserByEmail} from '../services/user'
   import {jwtDecode} from 'jwt-decode';
-  import { user } from '../store'
+  import { userStore } from '../store'
 	import { onDestroy } from 'svelte'
   import { goto } from '$app/navigation';
 
@@ -10,16 +10,23 @@
   /**
      * @type {any}
   */
+
   let user_value;
-  let unsubscribe = user.subscribe((u) => (user_value = u))
+  let unsubscribe = userStore.set(null);
 
   onMount(() => {
-    user.subscribe((u) => {
-      user_value = u;
-      if (user_value) {
-        goto('/question');
-      }
-    });
+    // user.subscribe((u) => {
+    //   user_value = u;
+    //   if (user_value) {
+    //     goto('/question');
+    //   }
+    // });
+    userStore.useLocalStorage();
+    
+    // if($userStore) {
+    //   goto('/question');
+    // }
+
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; // Replace with your client ID
     console.log(clientId)
     if (typeof window !== 'undefined') {
@@ -45,12 +52,12 @@
       const fetchedUser = await getUserByEmail(decoded.email)
       if(fetchedUser.length > 0){
           console.log('user already exists')
-          user.set(JSON.stringify({ // Corrected store update
+          $userStore = { // Corrected store update
             email: fetchedUser[0].email,
             firstName: fetchedUser[0].firstName,
             lastName: fetchedUser[0].lastName,
             friends: fetchedUser[0].friends
-          }));
+          };
           console.log(user_value)
           goto('/question')
       }
@@ -67,17 +74,16 @@
         //   lastName: decoded.family_name,
         //   email: decoded.email,
         //   friends:[] }))
-        user.set(JSON.stringify({ // Corrected store update
+        $userStore = { // Corrected store update
           firstName: decoded.given_name,
           lastName: decoded.family_name,
           email: decoded.email,
           friends: []
-        }));
+        };
         goto('/question')
       }
   }
 
-  onDestroy(unsubscribe)
 </script>
 
 <div id="buttonDiv"></div>

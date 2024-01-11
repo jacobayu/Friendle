@@ -1,16 +1,14 @@
 <script>
-    import { user } from '../../store';
     import { onMount } from 'svelte';
     import Button from '../../lib/button.svelte'
     import Navbar from '../../lib/nav-bar.svelte';
     let question = "Who is smarter?"
 
-    let user_value = {}
-    onMount(() =>{
-      user.subscribe((u) => {
-        user_value = u;
-      });
-    });
+    // onMount(() =>{
+    //   user.subscribe((u) => {
+    //     user_value = u;
+    //   });
+    // });
 
     const onClick = () => {
       console.log("clicked")

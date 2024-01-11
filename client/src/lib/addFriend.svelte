@@ -1,11 +1,12 @@
 <script>
     import { createEventDispatcher } from 'svelte';
     import { sendRequest } from '../services/request';
-    import { user } from "../store";
+    import { userStore } from "../store";
+
+    userStore.useLocalStorage();
 
     const dispatch = createEventDispatcher();
     let email = '';
-    $: user_value = $user;
   
     function closeModal() {
       dispatch('close');
@@ -15,7 +16,7 @@
       // Here you would have your logic to add a friend by email
       // For example:
       // addFriendByEmail(email).then(() => closeModal());
-      const friendRequest = await sendRequest(email, user_value.email);
+      const friendRequest = await sendRequest(email, $userStore.email);
       if(friendRequest == undefined){
         alert("Email not found with an account")
         return

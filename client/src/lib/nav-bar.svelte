@@ -1,13 +1,17 @@
 <script>
-  import { user } from "../store";
+  import { userStore } from "../store";
   import { onMount } from 'svelte';
   import Hamburger from './hamburger.svelte';
   import AddFriendModal from './addFriend.svelte';
+  import { goto } from '$app/navigation';
+
 
   let requests = 7; // You can fetch this from a store or an API
-  $: user_value = $user;
+  // $: user_value = $user;
   let showMenu = false;
   let showAddFriend = false;
+
+  
 
   function openAddFriend() {
     showAddFriend = true;
@@ -28,6 +32,12 @@
     //   user_value = $u;
     //   console.log(user_value)
     // });
+    userStore.useLocalStorage();
+    
+    if($userStore == null || $userStore == {}){
+      console.log('bruh')
+      goto('/sign-in')
+    }
     window.addEventListener('click', handleClickOutside);
 
     return () => {
@@ -49,7 +59,6 @@
     }
   }
 
-  console.log(user_value)
 </script>
   
   <style>
@@ -112,11 +121,11 @@
   <AddFriendModal on:close={closeAddFriend} />
 {/if}
 
-  {#if showMenu}
+  {#if showMenu && $userStore}
     <div class="dashboard">
         <div class="menu-item">
             <span class="menu-icon"><img src="/profile.svg" alt="profile"/></span>
-            {user_value.firstName} {user_value.lastName}
+            {$userStore.firstName} {$userStore.lastName}
         </div>
         <div class="menu-item">
           <span class="menu-icon"><img src="/friend.svg" alt="profile"/></span>
