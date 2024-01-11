@@ -6,12 +6,9 @@
   import { goto } from '$app/navigation';
 
 
-  let requests = 7; // You can fetch this from a store or an API
-  // $: user_value = $user;
+  let requests = 7; // TODO You can fetch this from a store or an API
   let showMenu = false;
   let showAddFriend = false;
-
-  
 
   function openAddFriend() {
     showAddFriend = true;
@@ -28,10 +25,6 @@
   }
 
   onMount(() =>{
-    // user.subscribe((u) => {
-    //   user_value = $u;
-    //   console.log(user_value)
-    // });
     userStore.useLocalStorage();
     
     if($userStore == null || $userStore == {}){

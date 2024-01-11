@@ -40,6 +40,7 @@ router.get('/query', async (req, res) => {
 // POST a new friend request
 router.post('/', async (req, res) => {
   try {
+    console.log(req.body)
     const newFriendRequest = await friendRequestService.createFriendRequest(req.body);
     res.status(201).json(newFriendRequest);
   } catch (error) {

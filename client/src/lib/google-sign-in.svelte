@@ -15,17 +15,9 @@
   let unsubscribe = userStore.set(null);
 
   onMount(() => {
-    // user.subscribe((u) => {
-    //   user_value = u;
-    //   if (user_value) {
-    //     goto('/question');
-    //   }
-    // });
+
     userStore.useLocalStorage();
     
-    // if($userStore) {
-    //   goto('/question');
-    // }
 
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; // Replace with your client ID
     console.log(clientId)
@@ -70,10 +62,6 @@
           friends:[]
         }
         await createUser(info)
-        // user.update((u) => u = JSON.stringify({ firstName: decoded.given_name,
-        //   lastName: decoded.family_name,
-        //   email: decoded.email,
-        //   friends:[] }))
         $userStore = { // Corrected store update
           firstName: decoded.given_name,
           lastName: decoded.family_name,

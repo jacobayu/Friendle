@@ -1,11 +1,18 @@
 import { getUserByEmail } from "./user";
 export async function sendRequest(to: any, from:any){
     try {
-        const toUser = await getUserByEmail(to);
-        const fromUser = await getUserByEmail(from)
+        let toUser = await getUserByEmail(to);
+        let fromUser = await getUserByEmail(from)
         console.log(toUser)
         console.log(fromUser)
         if(toUser.length == 0){
+            alert("An account with that email does not exist")
+            return undefined
+        }
+        toUser = toUser[0]
+        fromUser = fromUser[0]
+        if(toUser._id in fromUser.friends){
+            alert("You are already friends with this user")
             return undefined
         }
         const body = {
@@ -15,7 +22,7 @@ export async function sendRequest(to: any, from:any){
             dateSend: Date.now(),
             dateResponded: undefined
         }
-        const res = await fetch('http://localhost:8000/api/request', {
+        const res = await fetch('http://localhost:8000/api/friendRequest', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,3 +41,49 @@ export async function sendRequest(to: any, from:any){
         console.error('Error sending token to backend', error);
     }
 };
+
+export async function getFriendRequests(email:any){
+    try {
+        const user = await getUserByEmail(email)
+        const res = await fetch(`http://localhost:8000/api/friendRequest/query?email=${email}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (res.ok) {
+            const requests = await res.json();
+            return requests
+        } else {
+            console.error('Error from backend', res);
+            return null
+        }
+    } catch (error) {
+        console.error('Error sending token to backend', error);
+    }
+}
+
+export async function updateFriendRequests(id:any, status:string){
+    const body = {
+        status: status,
+        dateResponded: Date.now()
+    }
+    try {
+        const res = await fetch(`http://localhost:8000/api/friendRequest/query?email=${email}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        });
+        if (res.ok) {
+            const requests = await res.json();
+            return requests
+        } else {
+            console.error('Error from backend', res);
+            return null
+        }
+    } catch (error) {
+        console.error('Error sending token to backend', error);
+    }
+}
