@@ -29,7 +29,9 @@ router.get('/:id', async (req, res) => {
 // GET friend requests based on query parameters
 router.get('/query', async (req, res) => {
     try {
+      console.log('here')
       const params = req.query;
+      console.log(params)
       const friendRequests = await friendRequestService.getFriendRequestsByParams(params);
       res.json(friendRequests);
     } catch (error) {

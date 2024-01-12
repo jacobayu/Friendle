@@ -63,6 +63,27 @@ export async function getFriendRequests(email:any){
     }
 }
 
+export async function getPendingFriendRequests(email:any){
+    try {
+        const user = await getUserByEmail(email)
+        const res = await fetch(`http://localhost:8000/api/friendRequest/query?email=${email}&status=pending`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (res.ok) {
+            const requests = await res.json();
+            return requests
+        } else {
+            console.error('Error from backend', res);
+            return null
+        }
+    } catch (error) {
+        console.error('Error sending token to backend', error);
+    }
+}
+
 export async function updateFriendRequests(id:any, status:string){
     const body = {
         status: status,
