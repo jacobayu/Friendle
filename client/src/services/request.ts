@@ -66,7 +66,8 @@ export async function getFriendRequests(email:any){
 export async function getPendingFriendRequests(email:any){
     try {
         const user = await getUserByEmail(email)
-        const res = await fetch(`http://localhost:8000/api/friendRequest/query?email=${email}&status=pending`, {
+        console.log(user)
+        const res = await fetch(`http://localhost:8000/api/friendRequest/query?toID=${user[0]._id}&status=pending`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

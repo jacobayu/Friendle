@@ -11,15 +11,19 @@
   let showMenu = false;
   let showAddFriend = false;
   let showRequests = false;
-  let requests = [{
-    firstName: "Lucy",
-    lastName: "L"
-  }];
+  /**
+     * @type {string | any[]}
+     */
+  let requests = [];
 
-  async function openRequests() {
+  function openRequests() {
     showRequests = true
+  }
+
+  async function getRequests(){
     const email = $userStore.email 
     const pendingRequests = await getPendingFriendRequests(email)
+    console.log(pendingRequests)
     if (pendingRequests){
       requests = pendingRequests
     }
@@ -48,7 +52,7 @@
       showMenu = true;
   }
 
-  onMount(() =>{
+  onMount(async () =>{
     userStore.useLocalStorage();
     
     if($userStore == null || $userStore == {}){
@@ -56,6 +60,8 @@
       goto('/sign-in')
     }
     window.addEventListener('click', handleClickOutside);
+
+    await getRequests(); 
 
     return () => {
       // Remove event listener when the component is destroyed

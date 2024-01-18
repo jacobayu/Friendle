@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET a single friend request by ID
-router.get('/:id', async (req, res) => {
+router.get(':id', async (req, res) => {
   try {
     const friendRequest = await friendRequestService.getFriendRequestById(req.params.id);
     if (!friendRequest) {
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT to update a friend request
-router.put('/:id', async (req, res) => {
+router.put(':id', async (req, res) => {
   try {
     const updatedFriendRequest = await friendRequestService.updateFriendRequest(req.params.id, req.body);
     if (!updatedFriendRequest) {
