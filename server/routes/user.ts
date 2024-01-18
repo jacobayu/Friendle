@@ -49,7 +49,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // PUT /users/:id - Update a user
-router.put('/:id', async (req: Request, res: Response) => {
+router.put(':id', async (req: Request, res: Response) => {
   try {
     const updatedUserData = req.body;
     const updatedUser = await userService.updateUser(req.params.id, updatedUserData);
@@ -63,7 +63,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 });
 
 // POST /users/:id/friends/:friendId - Add a friend
-router.post('/:id/friends/:friendId', async (req: Request, res: Response) => {
+router.post(':id/friends/:friendId', async (req: Request, res: Response) => {
   try {
     const updatedUser = await userService.addFriend(req.params.id, req.params.friendId);
     if (!updatedUser) {
@@ -76,7 +76,7 @@ router.post('/:id/friends/:friendId', async (req: Request, res: Response) => {
 });
 
 // DELETE /users/:id/friends/:friendId - Remove a friend
-router.delete('/:id/friends/:friendId', async (req: Request, res: Response) => {
+router.delete(':id/friends/:friendId', async (req: Request, res: Response) => {
   try {
     const updatedUser = await userService.removeFriend(req.params.id, req.params.friendId);
     if (!updatedUser) {

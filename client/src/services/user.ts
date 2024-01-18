@@ -12,6 +12,7 @@ export async function createUser(data: any){
             const data = await res.json();
             console.log("successfully created new user")
             console.log('User data:', data); // Handle your response here
+            return data
         } else {
             console.error('Error from backend', res);
         }
@@ -19,6 +20,26 @@ export async function createUser(data: any){
         console.error('Error sending token to backend', error);
     }
 };
+
+export async function getUser(id:any){
+    try {
+        const res = await fetch(`http://localhost:8000/api/user/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (res.ok) {
+            const user = await res.json();
+            return user
+        } else {
+            console.error('Error from backend', res);
+            return null
+        }
+    } catch (error) {
+        console.error('Error sending token to backend', error);
+    }
+}
 
 export async function getUserByEmail(email:any){
     try {
@@ -43,13 +64,14 @@ export async function getUserByEmail(email:any){
 
 export async function addFriend(to: any, from: any){
     try {
-        let toUser = await getUserByEmail(to);
-        let fromUser = await getUserByEmail(from);
-        let newFriends = fromUser.friends 
-        newFriends.push(toUser._id)
+        let toUser = await getUser(to);
+        let fromUser = await getUser(from);
+        let newFriendsTo = fromUser.friends 
+        newFriendsTo.push(toUser._id)
         const body = {
-            friends: newFriends
+            friends: newFriendsTo
         }
+
         const res = await fetch(`http://localhost:8000/api/user/${fromUser._id}`, {
             method: 'PUT',
             headers: {
@@ -64,6 +86,7 @@ export async function addFriend(to: any, from: any){
             console.error('Error from backend', res);
             return null
         }
+        
     } catch (error) {
         console.error('Error sending token to backend', error);
     }

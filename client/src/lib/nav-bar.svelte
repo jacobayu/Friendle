@@ -4,7 +4,8 @@
   import Hamburger from './hamburger.svelte';
   import AddFriendModal from './addFriend.svelte';
   import { goto } from '$app/navigation';
-  import { getPendingFriendRequests } from "../services/request";
+  import { getPendingFriendRequests, updateFriendRequest } from "../services/request";
+  import { getUser, addFriend } from "../services/user";
 
 
   // TODO You can fetch this from a store or an API
@@ -21,19 +22,39 @@
   }
 
   async function getRequests(){
-    const email = $userStore.email 
-    const pendingRequests = await getPendingFriendRequests(email)
+    const id = $userStore._id 
+    const pendingRequests = await getPendingFriendRequests(id)
     console.log(pendingRequests)
     if (pendingRequests){
-      requests = pendingRequests
+      // @ts-ignore
+      const requestsWithUser = await Promise.all(pendingRequests.map(async (request) => {
+        const fromUser = await getUser(request.fromId);
+        // Return a new object combining the request and fromUser
+        return { ...request, fromUser };
+      }));
+
+      requests = requestsWithUser;
     }
   }
 
-  async function friendAccept() {
+  /**
+     * @param {string} requestId
+     * @param {string} friendId
+     */
+  async function friendAccept(requestId, friendId) {
+    const id = $userStore._id 
+    await updateFriendRequest(requestId, "accepted");
+    await addFriend(id, friendId);
+    await addFriend(friendId, id);
     event.stopPropagation();
   }
 
-  async function friendReject() {
+  /**
+     * @param {string} requestId
+     * @param {string} friendId
+     */
+  async function friendReject(requestId, friendId) {
+    await updateFriendRequest(requestId, "declined");
     event.stopPropagation();
     
   }
@@ -122,11 +143,11 @@
     {#each requests as request}
       <div class="request-item">
         <div>
-          {request.firstName} {request.lastName}
+          {request.fromUser.firstName} {request.fromUser.lastName}
         </div>
         <div class="request-row">
-          <div id="friend-X" on:click={friendReject}><img src="/x.svg" alt="X"/></div>
-          <div id="friend-check" on:click={friendAccept}><img src="/checkmark.svg" alt="checkmark"/></div>
+          <div id="friend-X" on:click={() => friendReject(request._id, request.fromUser._id)}><img src="/x.svg" alt="X"/></div>
+          <div id="friend-check" on:click={() => friendAccept(request._id, request.fromUser._id)}><img src="/checkmark.svg" alt="checkmark"/></div>
         </div>
       </div>
     {/each}

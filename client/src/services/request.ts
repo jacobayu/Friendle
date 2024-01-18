@@ -1,4 +1,4 @@
-import { getUserByEmail } from "./user";
+import { getUserByEmail, getUser } from "./user";
 export async function sendRequest(to: any, from:any){
     try {
         let toUser = await getUserByEmail(to);
@@ -42,10 +42,10 @@ export async function sendRequest(to: any, from:any){
     }
 };
 
-export async function getFriendRequests(email:any){
+
+export async function getPendingFriendRequests(id:any){
     try {
-        const user = await getUserByEmail(email)
-        const res = await fetch(`http://localhost:8000/api/friendRequest/query?email=${email}`, {
+        const res = await fetch(`http://localhost:8000/api/friendRequest/query?toID=${id}&status=pending`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,36 +63,14 @@ export async function getFriendRequests(email:any){
     }
 }
 
-export async function getPendingFriendRequests(email:any){
-    try {
-        const user = await getUserByEmail(email)
-        console.log(user)
-        const res = await fetch(`http://localhost:8000/api/friendRequest/query?toID=${user[0]._id}&status=pending`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (res.ok) {
-            const requests = await res.json();
-            return requests
-        } else {
-            console.error('Error from backend', res);
-            return null
-        }
-    } catch (error) {
-        console.error('Error sending token to backend', error);
-    }
-}
-
-export async function updateFriendRequests(id:any, status:string){
+export async function updateFriendRequest(id:any, status:string){
     const body = {
         status: status,
         dateResponded: Date.now()
     }
     try {
-        const res = await fetch(`http://localhost:8000/api/friendRequest/query?email=${email}`, {
-            method: 'POST',
+        const res = await fetch(`http://localhost:8000/api/friendRequest/${id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },

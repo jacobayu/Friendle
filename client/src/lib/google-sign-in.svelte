@@ -18,7 +18,6 @@
 
     userStore.useLocalStorage();
     
-
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID; // Replace with your client ID
     console.log(clientId)
     if (typeof window !== 'undefined') {
@@ -48,7 +47,8 @@
             email: fetchedUser[0].email,
             firstName: fetchedUser[0].firstName,
             lastName: fetchedUser[0].lastName,
-            friends: fetchedUser[0].friends
+            friends: fetchedUser[0].friends,
+            _id:fetchedUser[0]._id
           };
           console.log(user_value)
           goto('/question')
@@ -61,12 +61,13 @@
           email: decoded.email,
           friends:[]
         }
-        await createUser(info)
+        const newUser = await createUser(info)
         $userStore = { // Corrected store update
           firstName: decoded.given_name,
           lastName: decoded.family_name,
           email: decoded.email,
-          friends: []
+          friends: [],
+          _id: newUser._id
         };
         goto('/question')
       }
