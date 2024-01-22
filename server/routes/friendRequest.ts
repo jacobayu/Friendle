@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
 router.get('/query', async (req, res) => {
   try {
     const params = req.query;
-    console.log(params)
     const friendRequests = await friendRequestService.getFriendRequestsByParams(params);
     res.json(friendRequests);
   } catch (error) {
@@ -42,7 +41,6 @@ router.get('/:id', async (req, res) => {
 // POST a new friend request
 router.post('/', async (req, res) => {
   try {
-    console.log(req.body)
     const newFriendRequest = await friendRequestService.createFriendRequest(req.body);
     res.status(201).json(newFriendRequest);
   } catch (error) {
