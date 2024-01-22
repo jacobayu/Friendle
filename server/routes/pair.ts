@@ -13,6 +13,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/query', async (req, res) => {
+  try {
+    const params = req.query;
+    console.log(params)
+    const friendRequests = await pairService.getPairs(params);
+    res.json(friendRequests);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
 // GET a single pair by ID
 router.get('/:id', async (req, res) => {
   try {

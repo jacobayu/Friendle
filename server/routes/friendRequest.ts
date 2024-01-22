@@ -13,8 +13,20 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET friend requests based on query parameters
+router.get('/query', async (req, res) => {
+  try {
+    const params = req.query;
+    console.log(params)
+    const friendRequests = await friendRequestService.getFriendRequestsByParams(params);
+    res.json(friendRequests);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
 // GET a single friend request by ID
-router.get(':id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const friendRequest = await friendRequestService.getFriendRequestById(req.params.id);
     if (!friendRequest) {
@@ -26,18 +38,6 @@ router.get(':id', async (req, res) => {
   }
 });
 
-// GET friend requests based on query parameters
-router.get('/query', async (req, res) => {
-    try {
-      console.log('here')
-      const params = req.query;
-      console.log(params)
-      const friendRequests = await friendRequestService.getFriendRequestsByParams(params);
-      res.json(friendRequests);
-    } catch (error) {
-      res.status(500).send((error as Error).message);
-    }
-  });
 
 // POST a new friend request
 router.post('/', async (req, res) => {
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT to update a friend request
-router.put(':id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const updatedFriendRequest = await friendRequestService.updateFriendRequest(req.params.id, req.body);
     if (!updatedFriendRequest) {

@@ -6,6 +6,7 @@
   import { goto } from '$app/navigation';
   import { getPendingFriendRequests, updateFriendRequest } from "../services/request";
   import { getUser, addFriend } from "../services/user";
+  import { createPair } from "../services/pair";
 
 
   // TODO You can fetch this from a store or an API
@@ -23,16 +24,19 @@
 
   async function getRequests(){
     const id = $userStore._id 
+    console.log(id)
     const pendingRequests = await getPendingFriendRequests(id)
     console.log(pendingRequests)
     if (pendingRequests){
       // @ts-ignore
       const requestsWithUser = await Promise.all(pendingRequests.map(async (request) => {
-        const fromUser = await getUser(request.fromId);
+        console.log(request)
+        const fromUser = await getUser(request.fromID);
         // Return a new object combining the request and fromUser
+        console.log(fromUser)
         return { ...request, fromUser };
       }));
-
+      console.log(requestsWithUser)
       requests = requestsWithUser;
     }
   }
@@ -46,6 +50,12 @@
     await updateFriendRequest(requestId, "accepted");
     await addFriend(id, friendId);
     await addFriend(friendId, id);
+    const pair = {  
+      users: [$userStore._id, friendId],
+      currentScore:0,
+      maxScore:0
+    };
+    await createPair(pair);
     event.stopPropagation();
   }
 

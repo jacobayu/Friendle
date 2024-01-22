@@ -13,19 +13,6 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-// GET /users/:id - Get a specific user
-router.get(':id', async (req: Request, res: Response) => {
-  try {
-    const user = await userService.getUser(req.params.id);
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).send((error as Error).message);
-  }
-});
-
 router.get('/query', async (req, res) => {
   try {
     const params = req.query;  // Capture query params
@@ -36,6 +23,22 @@ router.get('/query', async (req, res) => {
     res.status(500).send((error as Error).message);
   }
 });
+
+// GET /users/:id - Get a specific user
+router.get('/:id', async (req: Request, res: Response) => {
+  try {
+    console.log(req.params.id)
+    const user = await userService.getUser(req.params.id);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
+
 
 // POST /users - Create a new user
 router.post('/', async (req: Request, res: Response) => {

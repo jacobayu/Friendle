@@ -12,6 +12,7 @@ async function getUsers() {
  * @param userId - User's ID
  */
 async function getUser(userId: any) {
+  console.log(userId)
   return User.findById(userId).exec();
 }
 

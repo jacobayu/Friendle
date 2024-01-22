@@ -10,6 +10,10 @@ async function getPairById(pairId: string) {
   return await Pair.findById(pairId);
 }
 
+async function getPairByParams(params:any){
+  return await Pair.find(params)
+}
+
 // Create a new pair
 async function createPair(input: any) {
   const pair = new Pair(input);
@@ -31,5 +35,6 @@ module.exports = {
   getPairById, 
   createPair, 
   updatePair, 
-  deletePair 
+  deletePair,
+  getPairByParams,
 };
