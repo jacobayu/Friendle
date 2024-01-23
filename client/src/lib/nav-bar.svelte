@@ -3,23 +3,37 @@
   import { onMount } from 'svelte';
   import Hamburger from './hamburger.svelte';
   import AddFriendModal from './addFriend.svelte';
+  import NavBarRequests from "./nav-bar-requests.svelte";
   import { goto } from '$app/navigation';
-  import { getPendingFriendRequests, updateFriendRequest } from "../services/request";
-  import { getUser, addFriend } from "../services/user";
-  import { createPair } from "../services/pair";
+  import { getPendingFriendRequests } from "../services/request";
+  import { getUser } from "../services/user";
 
-
-  // TODO You can fetch this from a store or an API
   let showMenu = false;
   let showAddFriend = false;
   let showRequests = false;
+  let showFriends = false;
   /**
      * @type {string | any[]}
      */
   let requests = [];
+  /**
+     * @type {any[]}
+     */
+  let friends = []
 
   function openRequests() {
     showRequests = true
+  }
+
+  function openFriends(){
+    showFriends = true;
+  }
+
+  /**
+     * @param {string} friendId
+     */
+  function selectFriend(friendId){
+    
   }
 
   async function getRequests(){
@@ -41,32 +55,18 @@
     }
   }
 
-  /**
-     * @param {string} requestId
-     * @param {string} friendId
-     */
-  async function friendAccept(requestId, friendId) {
-    const id = $userStore._id 
-    await updateFriendRequest(requestId, "accepted");
-    await addFriend(id, friendId);
-    await addFriend(friendId, id);
-    const pair = {  
-      users: [$userStore._id, friendId],
-      currentScore:0,
-      maxScore:0
-    };
-    await createPair(pair);
-    event.stopPropagation();
-  }
-
-  /**
-     * @param {string} requestId
-     * @param {string} friendId
-     */
-  async function friendReject(requestId, friendId) {
-    await updateFriendRequest(requestId, "declined");
-    event.stopPropagation();
-    
+  async function getFriends() {
+    const friendIds = $userStore.friends
+    if(friendIds.length > 0){
+      await Promise.all(friendIds.map(async (friendId) => {
+        const friend = await getUser(friendId)
+        if(friend){
+          friends.push(friend);
+        }
+      }))
+    }
+    console.log($userStore.friends)
+    console.log(friends)
   }
 
   function openAddFriend() {
@@ -94,6 +94,8 @@
 
     await getRequests(); 
 
+    await getFriends();
+
     return () => {
       // Remove event listener when the component is destroyed
       window.removeEventListener('click', handleClickOutside);
@@ -111,6 +113,7 @@
     if (navbar && !navbar.contains(event.target) && showMenu) {
       showMenu = false;
       showRequests = false;
+      showFriends = false;
     }
   }
 
@@ -128,15 +131,18 @@
           <span class="menu-icon"><img src="/profile.svg" alt="profile"/></span>
           {$userStore.firstName} {$userStore.lastName}
       </div>
-      <div class="menu-item">
+      <div class="menu-item" on:click={openFriends}>
         <span class="menu-icon"><img src="/friend.svg" alt="profile"/></span>
         Friends
       </div>
-      <div class="menu-item" on:click={openRequests}>
-        <span class="menu-icon"><img src="/mail.svg" alt="mail"/></span>
-        Requests
-        <span class="badge">{requests.length}</span>
-      </div>
+      {#if requests.length > 0}
+        <div class="menu-item" on:click={openRequests}>
+          <span class="menu-icon"><img src="/mail.svg" alt="mail"/></span>
+          Requests
+          <span class="badge">{requests.length}</span>
+        </div>
+      {/if}
+
       <div class="menu-item" on:click={openAddFriend}>
         <span class="menu-icon"><img src="/addFriend.svg" alt="addFriend"/></span>
         Add Friend
@@ -149,15 +155,15 @@
 {/if}
 
 {#if showMenu && $userStore && showRequests}
+  <NavBarRequests requests={requests} />
+{/if}
+
+{#if showMenu && $userStore && showFriends}
   <div class="dashboard">
-    {#each requests as request}
-      <div class="request-item">
+    {#each friends as friend}
+      <div class="menu-item" on:click={() => selectFriend(friend._id)}>
         <div>
-          {request.fromUser.firstName} {request.fromUser.lastName}
-        </div>
-        <div class="request-row">
-          <div id="friend-X" on:click={() => friendReject(request._id, request.fromUser._id)}><img src="/x.svg" alt="X"/></div>
-          <div id="friend-check" on:click={() => friendAccept(request._id, request.fromUser._id)}><img src="/checkmark.svg" alt="checkmark"/></div>
+          {friend.firstName} {friend.lastName}
         </div>
       </div>
     {/each}
@@ -198,7 +204,7 @@
 
   .menu-item:last-child {
     margin-bottom: 0;
-    border-bottom: none; /* Removes the line from the last item */
+    /* border-bottom: none;  */
   }
 
   .badge {
@@ -215,71 +221,4 @@
   vertical-align: middle; /* Aligns the icon vertically with the text */
   margin-right: 10px;
 }
-
-.request-item {
-  display: flex;
-  border-bottom: 1px solid white; /* Adds a white line below each item */
-  padding-bottom: 20px;   
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top:10px;
-  margin-bottom: 10px;
-  vertical-align: middle;
-  flex-direction: column;  
-  /* justify-content: start; */
-}
-
-.request-row{
-  display:flex;
-}
-
-#friend-X, #friend-check {
-  display:flex;
-  padding: 20px 20px;
-  border-color: black;
-  border-width: 3px;
-  border-radius: 10px;
-  color: white;
-  font-size: 40px;
-  transition: background-color 0.3s ease;
-  width:30%;
-  height:15px !important;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  margin:5px;
-}
-
-#friend-X {
-  background-color: #E76767;
-}
-
-#friend-X:hover {
-  /* background-color: #EF8989; */
-  background-color: #B54747;
-}
-
-#friend-X:active {
-  /* background-color: #EF8989; */
-  background-color: darkred ;
-}
-
-#friend-check {
-  background-color: #AAFCBC;
-}
-
-#friend-check:hover {
-  background-color: #70C28C;
-}
-
-#friend-check:active{
-  background-color: #457552;
-}
-
-#friend-X img, #friend-check img{
-  width: 20px; /* Adjust the width as needed */
-  height: auto; /* Keeps the aspect ratio of the image */
-  vertical-align: middle;
-}
-
 </style>
