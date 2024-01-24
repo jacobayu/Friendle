@@ -13,6 +13,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET answers based on query parameters
+router.get('/today', async (req, res) => {
+  try {
+    const question = await questionService.getTodaysQuestion();
+    res.json(question);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
 
 // GET answers based on query parameters
 router.get('/query', async (req, res) => {

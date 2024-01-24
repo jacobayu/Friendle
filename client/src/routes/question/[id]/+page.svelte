@@ -8,6 +8,7 @@
     import { getUser } from '../../../services/user';
     import { userStore } from '../../../store';
     import { getPairByUserId } from '../../../services/pair';
+    import { getTodaysQuestion }  from '../../../services/question';
 
     /**
      * @type {string}
@@ -18,11 +19,7 @@
 
     let friend;
 
-    let question = "Who is smarter?"
-
-    function getQuestion(){
-
-    }
+    let question;
 
     const chooseSelf = () => {
       console.log("clicked")
@@ -34,16 +31,18 @@
 
     onMount(async() => {
         userStore.useLocalStorage();
+        console.log(friendId)
         friend = await getUser(friendId)
-        pair = await getPairByUserId(userStore._id, friend._id);
         console.log(friend)
+        question = await getTodaysQuestion();
+        console.log(question)
     })
 </script>
 
 <Navbar />
-{#if friend}
+{#if friend && question}
 <div class="container">
-  <div class="header">{question}</div>
+  <div class="header">{question.question}</div>
   <div class="left-half">
     <Button text="YOU" func={chooseSelf}></Button>
   </div>
