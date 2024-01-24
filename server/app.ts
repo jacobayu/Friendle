@@ -1,6 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import cron from 'node-cron';
+import { selectNewQuestionForToday } from './services/questionService';
 
 const config = require("./config");
 
@@ -13,6 +15,15 @@ app.use(cors());
 app.use(cors({
   origin: 'http://localhost:5173' // Replace with your front-end app's URL
 }));
+
+cron.schedule('0 0 * * *', async () => {
+  try {
+    await selectNewQuestionForToday();
+    console.log('New question selected for today');
+  } catch {
+    console.error('Error selecting new question:');
+  }
+});
 
 app.use(express.json());
 
