@@ -40,7 +40,7 @@ export async function sendRequest(to: any, from:any){
     } catch (error) {
         console.error('Error sending token to backend', error);
     }
-};
+}
 
 
 export async function getPendingFriendRequests(id:any){

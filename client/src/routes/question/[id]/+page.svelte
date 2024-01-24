@@ -1,26 +1,44 @@
 <script>
+// @ts-nocheck
+
     import { onMount } from 'svelte';
-    import Button from '../../lib/button.svelte'
-    import Navbar from '../../lib/nav-bar.svelte';
+    import Button from '../../../lib/button.svelte'
+    import Navbar from '../../../lib/nav-bar.svelte';
+    import { page } from '$app/stores';
+    import { getUser } from '../../../services/user';
+
+    /**
+     * @type {string}
+     */
+    let friendId;
+    $: friendId = $page.params.id;
+
+    let friend;
+
     let question = "Who is smarter?"
 
     const onClick = () => {
       console.log("clicked")
     }
+
+    onMount(async() => {
+        friend = await getUser(friendId)
+        console.log(friend)
+    })
 </script>
 
 <Navbar />
-
+{#if friend}
 <div class="container">
   <div class="header">{question}</div>
   <div class="left-half">
     <Button text="YOU" func={onClick}></Button>
   </div>
   <div class="right-half">
-    <Button text="LUCY" func={onClick}></Button>
+    <Button text={friend.firstName.toUpperCase()} func={onClick}></Button>
   </div>  
 </div>
-
+{/if}
 <style>
   :global(body) {
     margin: 0;

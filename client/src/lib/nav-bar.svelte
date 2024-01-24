@@ -4,6 +4,7 @@
   import Hamburger from './hamburger.svelte';
   import AddFriendModal from './addFriend.svelte';
   import NavBarRequests from "./nav-bar-requests.svelte";
+  import NavBarFriends from "./nav-bar-friends.svelte";
   import { goto } from '$app/navigation';
   import { getPendingFriendRequests } from "../services/request";
   import { getUser } from "../services/user";
@@ -27,13 +28,6 @@
 
   function openFriends(){
     showFriends = true;
-  }
-
-  /**
-     * @param {string} friendId
-     */
-  function selectFriend(friendId){
-    
   }
 
   async function getRequests(){
@@ -159,15 +153,7 @@
 {/if}
 
 {#if showMenu && $userStore && showFriends}
-  <div class="dashboard">
-    {#each friends as friend}
-      <div class="menu-item" on:click={() => selectFriend(friend._id)}>
-        <div>
-          {friend.firstName} {friend.lastName}
-        </div>
-      </div>
-    {/each}
-  </div>
+  <NavBarFriends friends={friends}/>
 {/if}
 
 <style>

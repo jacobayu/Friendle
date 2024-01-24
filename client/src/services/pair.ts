@@ -19,7 +19,7 @@ export async function createPair(data: any){
     } catch (error) {
         console.error('Error sending token to backend', error);
     }
-};
+}
 
 export async function getPairByUserId(id:any){
     try {
