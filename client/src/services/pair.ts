@@ -21,9 +21,9 @@ export async function createPair(data: any){
     }
 }
 
-export async function getPairByUserId(id:any){
+export async function getPairByUserId(id1:any, id2:any){
     try {
-        const res = await fetch(`http://localhost:8000/api/user/query?users=${id}`, {
+        const res = await fetch(`http://localhost:8000/api/pair/getByUser?user1=${id1}&user2=${id2}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

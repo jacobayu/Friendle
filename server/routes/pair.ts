@@ -13,6 +13,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET answers based on query parameters
+router.get('/getByUser', async (req, res) => {
+  try {
+    const params = req.query;  // Capture query params
+    const query = {users: {$all: [params.user1, params.user2]}}
+    const answers = await pairService.getPairByParams(query);
+    res.json(answers);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
 router.get('/query', async (req, res) => {
   try {
     const params = req.query;

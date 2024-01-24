@@ -6,23 +6,36 @@
     import Navbar from '../../../lib/nav-bar.svelte';
     import { page } from '$app/stores';
     import { getUser } from '../../../services/user';
+    import { userStore } from '../../../store';
+    import { getPairByUserId } from '../../../services/pair';
 
     /**
      * @type {string}
      */
     let friendId;
+    let pair;
     $: friendId = $page.params.id;
 
     let friend;
 
     let question = "Who is smarter?"
 
-    const onClick = () => {
+    function getQuestion(){
+
+    }
+
+    const chooseSelf = () => {
+      console.log("clicked")
+    }
+
+    const chooseFriend = () => {
       console.log("clicked")
     }
 
     onMount(async() => {
+        userStore.useLocalStorage();
         friend = await getUser(friendId)
+        pair = await getPairByUserId(userStore._id, friend._id);
         console.log(friend)
     })
 </script>
@@ -32,10 +45,10 @@
 <div class="container">
   <div class="header">{question}</div>
   <div class="left-half">
-    <Button text="YOU" func={onClick}></Button>
+    <Button text="YOU" func={chooseSelf}></Button>
   </div>
   <div class="right-half">
-    <Button text={friend.firstName.toUpperCase()} func={onClick}></Button>
+    <Button text={friend.firstName.toUpperCase()} func={chooseFriend}></Button>
   </div>  
 </div>
 {/if}

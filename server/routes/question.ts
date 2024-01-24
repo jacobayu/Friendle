@@ -13,6 +13,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+
+// GET answers based on query parameters
+router.get('/query', async (req, res) => {
+  try {
+    const params = req.query;  // Capture query params
+    const answers = await questionService.getQuestionsByParams(params);
+    res.json(answers);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
 // GET a single question by ID
 router.get('/:id', async (req, res) => {
   try {
@@ -21,17 +33,6 @@ router.get('/:id', async (req, res) => {
       return res.status(404).send('Question not found');
     }
     res.json(question);
-  } catch (error) {
-    res.status(500).send((error as Error).message);
-  }
-});
-
-// GET answers based on query parameters
-router.get('/query', async (req, res) => {
-  try {
-    const params = req.query;  // Capture query params
-    const answers = await questionService.getQuestionsByParams(params);
-    res.json(answers);
   } catch (error) {
     res.status(500).send((error as Error).message);
   }
