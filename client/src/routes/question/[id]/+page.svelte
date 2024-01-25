@@ -9,6 +9,8 @@
     import { userStore } from '../../../store';
     import { getPairByUserId } from '../../../services/pair';
     import { getTodaysQuestion }  from '../../../services/question';
+    import CorrectModal from '$lib/correct-modal.svelte';
+    import PendingModal from '$lib/pending-modal.svelte';
 
     /**
      * @type {string}
@@ -45,6 +47,9 @@
 </script>
 
 <Navbar />
+<PendingModal currentStreak=5 maxStreak=6 open={true}/>
+
+<CorrectModal currentStreak=5 maxStreak=6 open={false}/>
 {#if friend && question}
 <div class="container">
   <div class="header">{question.question}</div>

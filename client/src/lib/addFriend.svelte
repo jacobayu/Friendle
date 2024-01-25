@@ -5,11 +5,11 @@
 
     userStore.useLocalStorage();
 
-    const dispatch = createEventDispatcher();
+    let open = true;
     let email = '';
   
     function closeModal() {
-      dispatch('close');
+      open = false;
     }
   
     async function addFriend() {
@@ -101,12 +101,13 @@
         font-size: 40px;
     }
   </style>
-  
-  <div class="modal" on:click={handleBackdropClick}>
-    <div class="modal-content" on:click={stopPropagation}>
-      <button class="close-button" on:click={closeModal} aria-label="Close modal">+</button>
-      <h2>ADD FRIEND</h2>
-      <input type="email" placeholder="Friend's email" bind:value={email} />
-      <button id="addFriendButton" on:click={addFriend} disabled={!email}>Add Friend</button>
+  {#if open}
+    <div class="modal" on:click={handleBackdropClick}>
+      <div class="modal-content" on:click={stopPropagation}>
+        <button class="close-button" on:click={closeModal} aria-label="Close modal">+</button>
+        <h2>ADD FRIEND</h2>
+        <input type="email" placeholder="Friend's email" bind:value={email} />
+        <button id="addFriendButton" on:click={addFriend} disabled={!email}>Add Friend</button>
+      </div>
     </div>
-  </div>
+  {/if}

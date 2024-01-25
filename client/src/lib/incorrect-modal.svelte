@@ -40,9 +40,8 @@
                         <div class="max-streak">{maxStreak}</div>
                         <div class="max-label">MAX</div>
                         <div class="max-label">STREAK</div>
-                    </div>
+                    </div> 
                 </div>
-                <div class=label><i>TELL YOUR PARTNER TO GET ON IT</i></div> 
             </div>
         </div>
     {/if}
@@ -63,7 +62,7 @@
       
         .modal-content {
           position: relative;
-          background: #FFBD70;
+          background: #FF7B7B;
           padding: 40px 50px;
           border-radius: 10px;
           text-align: center;
@@ -126,11 +125,6 @@
             width: 3px !important; /* Thickness of the line */
             height: 150px;
             margin-top: 10px;
-        }
-
-        .label {
-            margin-top: 20px;
-            font-size: 16px;
         }
     </style>
       
