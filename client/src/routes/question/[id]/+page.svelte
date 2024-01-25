@@ -29,11 +29,16 @@
       console.log("clicked")
     }
 
+    async function onChangeFriend() {
+        friend = await getUser(friendId)
+        pair = await getPairByUserId(friendId, $userStore._id);
+    }
+
+    $: friendId, onChangeFriend()
+
     onMount(async() => {
         userStore.useLocalStorage();
-        console.log(friendId)
-        friend = await getUser(friendId)
-        console.log(friend)
+        onChangeFriend()
         question = await getTodaysQuestion();
         console.log(question)
     })

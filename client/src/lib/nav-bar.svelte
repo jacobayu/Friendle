@@ -59,8 +59,6 @@
         }
       }))
     }
-    console.log($userStore.friends)
-    console.log(friends)
   }
 
   function openAddFriend() {
