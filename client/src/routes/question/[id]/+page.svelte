@@ -11,6 +11,7 @@
     import { getTodaysQuestion }  from '../../../services/question';
     import CorrectModal from '$lib/correct-modal.svelte';
     import PendingModal from '$lib/pending-modal.svelte';
+    import IncorrectModal from '$lib/incorrect-modal.svelte';
 
     /**
      * @type {string}
@@ -24,11 +25,11 @@
     let question;
 
     const chooseSelf = () => {
-      console.log("clicked")
+      
     }
 
     const chooseFriend = () => {
-      console.log("clicked")
+      
     }
 
     async function onChangeFriend() {

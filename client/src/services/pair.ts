@@ -21,6 +21,27 @@ export async function createPair(data: any){
     }
 }
 
+export async function updatePair(id:string, body: any){
+    try{
+        const res = await fetch(`http://localhost:8000/api/pair/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(body)
+            });
+            if (res.ok) {
+                const data = await res.json();
+                console.log("successfully updated pair")
+                return data
+            } else {
+                console.error('Error from backend', res);
+            }
+    } catch (error) {
+        console.error('Error sending token to backend', error);
+    }
+}
+
 export async function getPairByUserId(id1:any, id2:any){
     try {
         const res = await fetch(`http://localhost:8000/api/pair/getByUser?user1=${id1}&user2=${id2}`, {
