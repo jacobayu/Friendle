@@ -7,7 +7,8 @@
     import { page } from '$app/stores';
     import { getUser } from '../../../services/user';
     import { userStore } from '../../../store';
-    import { getPairByUserId } from '../../../services/pair';
+    import { getPairByUserId, updatePair } from '../../../services/pair';
+    import { createAnswer, getAnswerByPair } from '../../../services/answer';
     import { getTodaysQuestion }  from '../../../services/question';
     import CorrectModal from '$lib/correct-modal.svelte';
     import PendingModal from '$lib/pending-modal.svelte';
@@ -19,17 +20,74 @@
     let friendId;
     let pair;
     $: friendId = $page.params.id;
-
     let friend;
-
     let question;
+    let showPending = false;
+    let showCorrect = false;
+    let showIncorrect = false;
 
-    const chooseSelf = () => {
-      
+    async function chooseSelf(){
+        const answerBody = {
+            userID: $userStore._id,
+            questionID: question._id,
+            pairID: pair._id,
+            answer:$userStore.firstName,
+        }
+        const answer = await createAnswer(answerBody);
+        let friendAnswer = await getAnswerByPair(friend._id, pair._id);
+        if(friendAnswer.length > 0){
+            friendAnswer = friendAnswer[0]
+            if(friendAnswer.answer == answer.answer){
+                const newPairBody = {
+                    currentScore: pair.currentScore + 1,
+                    maxScore: max(pair.currentScore + 1, pair.highScore)
+                }
+                pair = await updatePair(pair._id, newPairBody)
+                showCorrect = true
+            }
+            else{
+                const newPairBody = {
+                    currentScore: 0
+                }
+                pair = await updatePair(pair._id, newPairBody)
+                showIncorrect = true
+            }
+        }
+        else{
+            showPending = true
+        }
     }
 
-    const chooseFriend = () => {
-      
+    async function chooseFriend(){
+        const answerBody = {
+            userID: $userStore._id,
+            questionID: question._id,
+            pairID: pair._id,
+            answer:friend.firstName,
+        }
+        const answer = await createAnswer(answerBody);
+        let friendAnswer = await getAnswerByPair(friend._id, pair._id);
+        if(friendAnswer.length > 0){
+            friendAnswer = friendAnswer[0]
+            if(friendAnswer.answer == answer.answer){
+                const newPairBody = {
+                    currentScore: pair.currentScore + 1,
+                    maxScore: max(pair.currentScore + 1, pair.highScore)
+                }
+                pair = await updatePair(pair._id, newPairBody)
+                showCorrect = true
+            }
+            else{
+                const newPairBody = {
+                    currentScore: 0
+                }
+                pair = await updatePair(pair._id, newPairBody)
+                showIncorrect = true
+            }
+        }
+        else{
+            showPending = true
+        }
     }
 
     async function onChangeFriend() {
@@ -48,9 +106,18 @@
 </script>
 
 <Navbar />
-<PendingModal currentStreak=5 maxStreak=6 open={true}/>
+{#if showCorrect}
+    <IncorrectModal currentStreak={pair.currentScore} maxStreak={pair.highScore}/>
+{/if}
 
-<CorrectModal currentStreak=5 maxStreak=6 open={false}/>
+{#if showPending}
+    <PendingModal currentStreak={pair.currentScore} maxStreak={pair.highScore}/>
+{/if}
+
+{#if showIncorrect}
+    <CorrectModal currentStreak={pair.currentScore} maxStreak={pair.highScore}/>
+{/if}
+
 {#if friend && question}
 <div class="container">
   <div class="header">{question.question}</div>
