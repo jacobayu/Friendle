@@ -2,10 +2,11 @@
     // You can add your JavaScript logic here
     export let text = "";
     export let func = () => {};
-    let isClicked = false;
+    export let disabled = false;
+    export let clicked = false;
     function handleClick() {
         func(); // Call the passed onClick function
-        isClicked = true; // Set the clicked state to true
+        clicked = true; // Set the clicked state to true
     }
 </script>
   
@@ -31,14 +32,20 @@
       background-color: navy;
     }
 
+
+    .custom-button:disabled {
+      background-color: black;
+      color:white;
+    }
+
     .clicked {
-        box-shadow: 0 0 20px #4F9A64;
-        background-color: white;
-        color:black;
+        box-shadow: 0 0 30px #4F9A64;
+        background-color: white !important;
+        color:black !important;
     }
   </style>
   
-  <button class="custom-button {isClicked ? 'clicked' : ''}" on:click={handleClick}>
+  <button class="custom-button {clicked ? 'clicked' : ''}" on:click={handleClick} disabled={disabled}>
     {text}
   </button>
   

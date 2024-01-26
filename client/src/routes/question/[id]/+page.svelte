@@ -25,8 +25,16 @@
     let showPending = false;
     let showCorrect = false;
     let showIncorrect = false;
+    let youButtonClicked = false;
+    let youButtonDisabled = false;
+    let friendButtonClicked = false;
+    let friendButtonDisabled = false;
+    let isClientSide = false;
 
     async function chooseSelf(){
+        youButtonDisabled=true;
+        friendButtonDisabled=true;
+        youButtonClicked=true;
         const answerBody = {
             userID: $userStore._id,
             questionID: question._id,
@@ -34,13 +42,13 @@
             answer:$userStore.firstName,
         }
         const answer = await createAnswer(answerBody);
-        let friendAnswer = await getAnswerByPair(friend._id, pair._id);
+        let friendAnswer = await getAnswerByPair(friend._id, pair._id, question._id);
         if(friendAnswer.length > 0){
             friendAnswer = friendAnswer[0]
             if(friendAnswer.answer == answer.answer){
                 const newPairBody = {
                     currentScore: pair.currentScore + 1,
-                    maxScore: max(pair.currentScore + 1, pair.highScore)
+                    maxScore: Math.max(pair.currentScore + 1, pair.highScore)
                 }
                 pair = await updatePair(pair._id, newPairBody)
                 showCorrect = true
@@ -59,6 +67,9 @@
     }
 
     async function chooseFriend(){
+        youButtonDisabled=true;
+        friendButtonDisabled=true;
+        friendButtonClicked=true;
         const answerBody = {
             userID: $userStore._id,
             questionID: question._id,
@@ -66,13 +77,13 @@
             answer:friend.firstName,
         }
         const answer = await createAnswer(answerBody);
-        let friendAnswer = await getAnswerByPair(friend._id, pair._id);
+        let friendAnswer = await getAnswerByPair(friend._id, pair._id, question._id);
         if(friendAnswer.length > 0){
             friendAnswer = friendAnswer[0]
             if(friendAnswer.answer == answer.answer){
                 const newPairBody = {
                     currentScore: pair.currentScore + 1,
-                    maxScore: max(pair.currentScore + 1, pair.highScore)
+                    maxScore: Math.max(pair.currentScore + 1, pair.highScore)
                 }
                 pair = await updatePair(pair._id, newPairBody)
                 showCorrect = true
@@ -91,14 +102,55 @@
     }
 
     async function onChangeFriend() {
+        if (!isClientSide || !$userStore._id) {
+            return;
+        }
+        showPending = false;
+        showCorrect = false;
+        showIncorrect = false;
+        friendButtonClicked = false;
+        youButtonClicked = false;
+        friendButtonDisabled = false;
+        youButtonDisabled = false;
+
         friend = await getUser(friendId)
         pair = await getPairByUserId(friendId, $userStore._id);
+        pair = pair[0]
+        let answer = await getAnswerByPair($userStore._id, pair._id, question._id)
+        console.log(answer)
+        if(answer.length > 0){
+            answer = answer[0]
+            youButtonDisabled=true;
+            friendButtonDisabled=true;
+            if(answer.answer == friend.firstName){
+                friendButtonClicked = true;
+            }
+            else{
+                youButtonClicked = true;
+            }
+            let friendAnswer = await getAnswerByPair(friend._id, pair._id, question._id)
+            if(friendAnswer.length > 0){
+                friendAnswer = friendAnswer[0]
+                if(answer.answer == friend.answer){
+                    showCorrect=true
+                }
+                else{
+                    showIncorrect=true
+                }
+            }
+            else{
+                showPending=true
+            }
+        }
     }
 
-    $: friendId, onChangeFriend()
+    $: if(friendId && isClientSide) {
+        onChangeFriend();
+    }
 
     onMount(async() => {
         userStore.useLocalStorage();
+        isClientSide = true;
         onChangeFriend()
         question = await getTodaysQuestion();
         console.log(question)
@@ -122,13 +174,24 @@
 <div class="container">
   <div class="header">{question.question}</div>
   <div class="left-half">
-    <Button text="YOU" func={chooseSelf}></Button>
+    <Button 
+        text="YOU" 
+        func={chooseSelf} 
+        disabled={youButtonDisabled} 
+        clicked={youButtonClicked}>
+    </Button>
   </div>
   <div class="right-half">
-    <Button text={friend.firstName.toUpperCase()} func={chooseFriend}></Button>
+    <Button 
+        text={friend.firstName.toUpperCase()} 
+        func={chooseFriend} 
+        disabled={friendButtonDisabled} 
+        clicked={friendButtonClicked}>
+    </Button>
   </div>  
 </div>
 {/if}
+
 <style>
   :global(body) {
     margin: 0;
@@ -173,5 +236,3 @@
     background-color: #FFF6A1; /* Replace with your preferred color */
   } 
 </style>
-
-  

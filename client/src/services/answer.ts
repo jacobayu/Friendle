@@ -20,9 +20,9 @@ export async function createAnswer(data: any){
     }
 }
 
-export async function getAnswerByPair(friendId: any, pairId:any){
+export async function getAnswerByPair(userId: any, pairId:any, questionId: any){
     try {
-        const res = await fetch(`http://localhost:8000/api/user/query?friendID=${friendId}&pairID=${pairId}`, {
+        const res = await fetch(`http://localhost:8000/api/answer/query?userID=${userId}&pairID=${pairId}&questionID=${questionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

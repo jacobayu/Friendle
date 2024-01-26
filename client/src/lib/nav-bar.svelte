@@ -75,6 +75,11 @@
       showMenu = true;
   }
 
+  function logOut(){
+    goto('/');
+    userStore.clear()
+  }
+
   onMount(async () =>{
     userStore.useLocalStorage();
     
@@ -139,7 +144,7 @@
         <span class="menu-icon"><img src="/addFriend.svg" alt="addFriend"/></span>
         Add Friend
       </div>
-      <div class="menu-item">
+      <div class="menu-item" on:click={logOut}>
           <span class="menu-icon"><img src="/out.svg" alt="logOut"/></span>
           Log Out
       </div>

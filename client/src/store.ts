@@ -1,13 +1,3 @@
-// import { writable } from 'svelte/store'
-// import { browser } from '$app/environment'
-
-// let persistedUser = browser && localStorage.getItem('user')
-// console.log(JSON.stringify(persistedUser))
-// export let user = writable(persistedUser ? JSON.parse(persistedUser) : '')
-
-// if (browser) {
-//     user.subscribe(u => localStorage.user = u)
-// }
 
 import { writable } from 'svelte/store';
 
@@ -27,6 +17,10 @@ function createPersistentStore(key: string, startValue: any) {
       subscribe((current) => {
         localStorage.setItem(key, JSON.stringify(current));
       });
+    },
+    clear: () => {
+      set(startValue); // Reset the store to its initial value
+      localStorage.removeItem(key); // Remove the item from localStorage
     }
   };
 }

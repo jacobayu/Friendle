@@ -13,6 +13,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET answers based on query parameters
+router.get('/query', async (req, res) => {
+  try {
+    const params = req.query;  // Capture query params
+    console.log("searching for items with params: ", params)
+    const answers = await answerService.getAnswersByParams(params);
+    res.json(answers);
+  } catch (error) {
+    res.status(500).send((error as Error).message);
+  }
+});
+
 // GET a single answer by ID
 router.get('/:id', async (req, res) => {
   try {
@@ -25,17 +37,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).send((error as Error).message);
   }
 });
-
-// GET answers based on query parameters
-router.get('/query', async (req, res) => {
-    try {
-      const params = req.query;  // Capture query params
-      const answers = await answerService.getAnswersByParams(params);
-      res.json(answers);
-    } catch (error) {
-      res.status(500).send((error as Error).message);
-    }
-  });
 
 // POST a new answer
 router.post('/', async (req, res) => {
