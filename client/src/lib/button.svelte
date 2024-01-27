@@ -39,7 +39,7 @@
     }
 
     .clicked {
-        box-shadow: 0 0 30px #4F9A64;
+        box-shadow: 0 0 100px #2dbc55;
         background-color: white !important;
         color:black !important;
     }

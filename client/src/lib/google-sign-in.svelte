@@ -51,7 +51,12 @@
             _id:fetchedUser[0]._id
           };
           console.log(user_value)
-          goto('/question')
+          if($userStore.friends.length > 0){
+            goto(`/question/${$userStore.friends[0]}`)
+          }
+          else{
+            goto('/no-friends')
+          }
       }
       else{
         console.log("creating user")
@@ -69,7 +74,7 @@
           friends: [],
           _id: newUser._id
         };
-        goto('/question')
+        goto('/no-friends')
       }
   }
 

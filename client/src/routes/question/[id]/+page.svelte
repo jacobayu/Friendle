@@ -39,7 +39,7 @@
             userID: $userStore._id,
             questionID: question._id,
             pairID: pair._id,
-            answer:$userStore.firstName,
+            answer:$userStore._id,
         }
         const answer = await createAnswer(answerBody);
         let friendAnswer = await getAnswerByPair(friend._id, pair._id, question._id);
@@ -48,7 +48,7 @@
             if(friendAnswer.answer == answer.answer){
                 const newPairBody = {
                     currentScore: pair.currentScore + 1,
-                    maxScore: Math.max(pair.currentScore + 1, pair.highScore)
+                    highScore: Math.max(pair.currentScore + 1, pair.highScore)
                 }
                 pair = await updatePair(pair._id, newPairBody)
                 showCorrect = true
@@ -74,7 +74,7 @@
             userID: $userStore._id,
             questionID: question._id,
             pairID: pair._id,
-            answer:friend.firstName,
+            answer:friend._id,
         }
         const answer = await createAnswer(answerBody);
         let friendAnswer = await getAnswerByPair(friend._id, pair._id, question._id);
@@ -83,7 +83,7 @@
             if(friendAnswer.answer == answer.answer){
                 const newPairBody = {
                     currentScore: pair.currentScore + 1,
-                    maxScore: Math.max(pair.currentScore + 1, pair.highScore)
+                    highScore: Math.max(pair.currentScore + 1, pair.highScore)
                 }
                 pair = await updatePair(pair._id, newPairBody)
                 showCorrect = true
@@ -122,7 +122,7 @@
             answer = answer[0]
             youButtonDisabled=true;
             friendButtonDisabled=true;
-            if(answer.answer == friend.firstName){
+            if(answer.answer == friend._id){
                 friendButtonClicked = true;
             }
             else{
@@ -131,7 +131,7 @@
             let friendAnswer = await getAnswerByPair(friend._id, pair._id, question._id)
             if(friendAnswer.length > 0){
                 friendAnswer = friendAnswer[0]
-                if(answer.answer == friend.answer){
+                if(answer.answer == friendAnswer.answer){
                     showCorrect=true
                 }
                 else{
@@ -158,7 +158,7 @@
 </script>
 
 <Navbar />
-{#if showCorrect}
+{#if showIncorrect}
     <IncorrectModal currentStreak={pair.currentScore} maxStreak={pair.highScore}/>
 {/if}
 
@@ -166,7 +166,7 @@
     <PendingModal currentStreak={pair.currentScore} maxStreak={pair.highScore}/>
 {/if}
 
-{#if showIncorrect}
+{#if showCorrect}
     <CorrectModal currentStreak={pair.currentScore} maxStreak={pair.highScore}/>
 {/if}
 

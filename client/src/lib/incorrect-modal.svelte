@@ -27,7 +27,7 @@
             <div class="modal-content" on:click={stopPropagation}>
                 <button class="close-button" on:click={closeModal} aria-label="Close modal">+</button>
                 <div class="modal-header">
-                    <h2>CORRECT!</h2>
+                    <h2>INCORRECT!</h2>
                 </div>
                 <div class="modal-body">
                     <div class="current-body">

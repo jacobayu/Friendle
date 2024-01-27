@@ -1,23 +1,17 @@
 <script>
-    import { onMount } from 'svelte';
     import Button from '../../lib/button.svelte'
     import Navbar from '../../lib/nav-bar.svelte';
-    let question = "Who is pog?"
+    let statement = "Add a friend in the nav bar to play!"
 
-    const onClick = () => {
-      console.log("clicked")
-    }
 </script>
 
 <Navbar />
 
 <div class="container">
-  <div class="header">{question}</div>
+  <div class="header">{statement}</div>
   <div class="left-half">
-    <Button text="YOU" func={onClick}></Button>
   </div>
   <div class="right-half">
-    <Button text="LUCY" func={onClick}></Button>
   </div>  
 </div>
 
@@ -33,7 +27,7 @@
 
   .header {
     position: absolute;
-    top: 10%; /* Adjust this value to position the header as desired */
+    top: 30%; /* Adjust this value to position the header as desired */
     left: 50%;
     transform: translateX(-50%);
     background-color: white;

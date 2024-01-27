@@ -1,8 +1,30 @@
 <script>
     import GoogleSignIn from "$lib/google-sign-in.svelte";
 </script>
+<div class="container">
+    <div class="group">
+        <h1>Friendle.</h1>
+        <GoogleSignIn/>
+    </div>
+</div>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation HERE</p>
 
-<GoogleSignIn/>
+
+<style>
+    .group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+    }
+
+    h1{
+        font-size: 100px;
+    }
+
+    .container {
+        background-color: #FFF6A1;
+        height: 100vh;
+    }
+</style>
