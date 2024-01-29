@@ -1,6 +1,8 @@
+const url = import.meta.env.WEBSITE_URL;
+
 export async function createPair(data: any){
     try {
-        const res = await fetch('http://localhost:8000/api/pair', {
+        const res = await fetch(`${url}/api/pair`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +25,7 @@ export async function createPair(data: any){
 
 export async function updatePair(id:string, body: any){
     try{
-        const res = await fetch(`http://localhost:8000/api/pair/${id}`, {
+        const res = await fetch(`${url}/api/pair/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ export async function updatePair(id:string, body: any){
 
 export async function getPairByUserId(id1:any, id2:any){
     try {
-        const res = await fetch(`http://localhost:8000/api/pair/getByUser?user1=${id1}&user2=${id2}`, {
+        const res = await fetch(`${url}/api/pair/getByUser?user1=${id1}&user2=${id2}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

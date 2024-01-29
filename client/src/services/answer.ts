@@ -1,6 +1,8 @@
+const url = import.meta.env.WEBSITE_URL;
+
 export async function createAnswer(data: any){
     try {
-        const res = await fetch('http://localhost:8000/api/answer', {
+        const res = await fetch(`${url}/api/answer`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +24,7 @@ export async function createAnswer(data: any){
 
 export async function getAnswerByPair(userId: any, pairId:any, questionId: any){
     try {
-        const res = await fetch(`http://localhost:8000/api/answer/query?userID=${userId}&pairID=${pairId}&questionID=${questionId}`, {
+        const res = await fetch(`${url}/api/answer/query?userID=${userId}&pairID=${pairId}&questionID=${questionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

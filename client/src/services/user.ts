@@ -1,6 +1,8 @@
+const url = import.meta.env.WEBSITE_URL;
+
 export async function createUser(data: any){
     try {
-        const res = await fetch('http://localhost:8000/api/user', {
+        const res = await fetch(`${url}/api/user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,7 +25,7 @@ export async function createUser(data: any){
 
 export async function getUser(id:any){
     try {
-        const res = await fetch(`http://localhost:8000/api/user/${id}`, {
+        const res = await fetch(`${url}/api/user/${id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,7 +46,7 @@ export async function getUser(id:any){
 export async function getUserByEmail(email:any){
     try {
         console.log(email)
-        const res = await fetch(`http://localhost:8000/api/user/query?email=${email}`, {
+        const res = await fetch(`${url}/api/user/query?email=${email}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +74,7 @@ export async function addFriend(to: any, from: any){
             friends: newFriendsTo
         }
 
-        const res = await fetch(`http://localhost:8000/api/user/${fromUser._id}`, {
+        const res = await fetch(`${url}/api/user/${fromUser._id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

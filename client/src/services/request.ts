@@ -1,4 +1,7 @@
 import { getUserByEmail, getUser } from "./user";
+const url = import.meta.env.WEBSITE_URL;
+
+
 export async function sendRequest(to: any, from:any){
     try {
         let toUser = await getUserByEmail(to);
@@ -22,7 +25,7 @@ export async function sendRequest(to: any, from:any){
             dateSend: Date.now(),
             dateResponded: undefined
         }
-        const res = await fetch('http://localhost:8000/api/friendRequest', {
+        const res = await fetch(`${url}/api/friendRequest`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ export async function sendRequest(to: any, from:any){
 
 export async function getPendingFriendRequests(id:any){
     try {
-        const res = await fetch(`http://localhost:8000/api/friendRequest/query?toID=${id}&status=pending`, {
+        const res = await fetch(`${url}/api/friendRequest/query?toID=${id}&status=pending`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +72,7 @@ export async function updateFriendRequest(id:any, status:string){
         dateResponded: Date.now()
     }
     try {
-        const res = await fetch(`http://localhost:8000/api/friendRequest/${id}`, {
+        const res = await fetch(`${url}/api/friendRequest/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

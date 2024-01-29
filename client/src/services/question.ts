@@ -1,6 +1,8 @@
+const url = import.meta.env.WEBSITE_URL;
+
 export async function getTodaysQuestion(){
     try {
-        const res = await fetch(`http://localhost:8000/api/question/today`, {
+        const res = await fetch(`${url}/api/question/today`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
