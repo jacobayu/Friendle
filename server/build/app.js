@@ -25,6 +25,9 @@ app.use((0, cors_1.default)());
 app.use((0, cors_1.default)({
     origin: 'http://localhost:5173' // Replace with your front-end app's URL
 }));
+app.use((0, cors_1.default)({
+    origin: 'http://localhost:4173' // Replace with your front-end app's URL
+}));
 node_cron_1.default.schedule('0 0 * * *', () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield (0, questionService_1.selectNewQuestionForToday)();
