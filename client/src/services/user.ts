@@ -1,4 +1,6 @@
-const url = import.meta.env.WEBSITE_URL;
+
+const url = import.meta.env.VITE_WEBSITE_URL;
+console.log("URL", url)
 
 export async function createUser(data: any){
     try {

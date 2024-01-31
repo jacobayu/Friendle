@@ -1,4 +1,4 @@
-const url = import.meta.env.WEBSITE_URL;
+const url = import.meta.env.VITE_WEBSITE_URL;
 
 export async function getTodaysQuestion(){
     try {
