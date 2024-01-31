@@ -1,5 +1,5 @@
 import express from 'express';
-const questionService = require('../services/questionService.ts');
+const questionService = require('../services/questionService');
 
 const router = express.Router();
 

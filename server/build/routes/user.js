@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const userService = require('../services/userService.js');
+const userService = require('../services/userService');
 const router = express_1.default.Router();
 // GET /users - Get a list of users
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {

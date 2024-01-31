@@ -29,7 +29,7 @@ app.use((0, cors_1.default)());
 //   origin: 'http://localhost:4173' // BUILD SERVER URL
 // }));
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: 'https://friendle-self.vercel.app',
     credentials: true,
     optionSuccessStatus: 200,
 };

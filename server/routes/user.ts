@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-const userService = require('../services/userService.ts');
+const userService = require('../services/userService');
 
 const router = express.Router();
 
