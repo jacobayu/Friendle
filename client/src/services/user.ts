@@ -1,6 +1,5 @@
 
 const url = import.meta.env.VITE_WEBSITE_URL;
-console.log("URL", url)
 
 export async function createUser(data: any){
     try {
@@ -14,8 +13,6 @@ export async function createUser(data: any){
 
         if (res.ok) {
             const data = await res.json();
-            console.log("successfully created new user")
-            console.log('User data:', data); // Handle your response here
             return data
         } else {
             console.error('Error from backend', res);
@@ -47,7 +44,6 @@ export async function getUser(id:any){
 
 export async function getUserByEmail(email:any){
     try {
-        console.log(email)
         const res = await fetch(`${url}/api/user/query?email=${email}`, {
             method: 'GET',
             headers: {

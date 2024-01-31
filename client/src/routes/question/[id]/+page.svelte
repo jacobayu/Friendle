@@ -117,7 +117,6 @@
         pair = await getPairByUserId(friendId, $userStore._id);
         pair = pair[0]
         let answer = await getAnswerByPair($userStore._id, pair._id, question._id)
-        console.log(answer)
         if(answer.length > 0){
             answer = answer[0]
             youButtonDisabled=true;
@@ -153,7 +152,6 @@
         isClientSide = true;
         onChangeFriend()
         question = await getTodaysQuestion();
-        console.log(question)
     })
 </script>
 

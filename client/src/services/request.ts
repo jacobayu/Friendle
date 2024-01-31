@@ -5,9 +5,8 @@ const url = import.meta.env.VITE_WEBSITE_URL;
 export async function sendRequest(to: any, from:any){
     try {
         let toUser = await getUserByEmail(to);
-        let fromUser = await getUserByEmail(from)
-        console.log(toUser)
-        console.log(fromUser)
+        let fromUser = await getUserByEmail(from);
+        let requests = await getPendingFriendRequests(from)
         if(toUser.length == 0){
             alert("An account with that email does not exist")
             return undefined
@@ -16,6 +15,11 @@ export async function sendRequest(to: any, from:any){
         fromUser = fromUser[0]
         if(toUser._id in fromUser.friends){
             alert("You are already friends with this user")
+            return undefined
+        }
+        const requestExists = requests.some((obj: any ) => obj.toID == toUser._id);
+        if(requestExists){
+            alert("You have already sent this user a friend request")
             return undefined
         }
         const body = {
@@ -35,8 +39,8 @@ export async function sendRequest(to: any, from:any){
 
         if (res.ok) {
             const data = await res.json();
-            console.log("successfully sent request")
             console.log('reqest data:', data); // Handle your response here
+            return data
         } else {
             console.error('Error from backend', res);
         }

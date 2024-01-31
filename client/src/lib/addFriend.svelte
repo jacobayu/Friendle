@@ -18,6 +18,7 @@
       // addFriendByEmail(email).then(() => closeModal());
       const friendRequest = await sendRequest(email, $userStore.email);
       if(friendRequest == undefined){
+        closeModal();
         return
       }
       alert("friend request successfully sent")

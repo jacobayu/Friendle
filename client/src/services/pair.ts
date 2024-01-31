@@ -12,7 +12,6 @@ export async function createPair(data: any){
 
         if (res.ok) {
             const data = await res.json();
-            console.log("successfully created new pair")
             console.log('Pair data:', data); // Handle your response here
             return data
         } else {
@@ -34,7 +33,6 @@ export async function updatePair(id:string, body: any){
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log("successfully updated pair")
                 return data
             } else {
                 console.error('Error from backend', res);

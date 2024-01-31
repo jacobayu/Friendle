@@ -32,19 +32,14 @@
 
   async function getRequests(){
     const id = $userStore._id 
-    console.log(id)
     const pendingRequests = await getPendingFriendRequests(id)
-    console.log(pendingRequests)
     if (pendingRequests){
       // @ts-ignore
       const requestsWithUser = await Promise.all(pendingRequests.map(async (request) => {
-        console.log(request)
         const fromUser = await getUser(request.fromID);
         // Return a new object combining the request and fromUser
-        console.log(fromUser)
         return { ...request, fromUser };
       }));
-      console.log(requestsWithUser)
       requests = requestsWithUser;
     }
   }
@@ -63,7 +58,6 @@
 
   function openAddFriend() {
     showAddFriend = true;
-    console.log(showAddFriend)
   }
 
   function closeAddFriend() {
@@ -84,7 +78,6 @@
     userStore.useLocalStorage();
     
     if($userStore == null || $userStore == {}){
-      console.log('bruh')
       goto('/sign-in')
     }
     window.addEventListener('click', handleClickOutside);
