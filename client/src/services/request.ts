@@ -6,18 +6,28 @@ export async function sendRequest(to: any, from:any){
     try {
         let toUser = await getUserByEmail(to);
         let fromUser = await getUserByEmail(from);
-        let requests = await getPendingFriendRequests(from)
         if(toUser.length == 0){
             alert("An account with that email does not exist")
             return undefined
         }
         toUser = toUser[0]
         fromUser = fromUser[0]
-        if(toUser._id in fromUser.friends){
+        console.log(toUser._id)
+        console.log(fromUser.friends)
+        if(fromUser.friends.includes(toUser._id)){
             alert("You are already friends with this user")
             return undefined
         }
-        const requestExists = requests.some((obj: any ) => obj.toID == toUser._id);
+        let requests = await getPendingFriendRequests(fromUser._id)
+        console.log(requests)
+        let requestExists = false
+        if(requests.length > 0){
+            requests.array.forEach((request: any) => {
+                if(request.toID == toUser._id){
+                    requestExists = true;
+                }
+            });
+        }
         if(requestExists){
             alert("You have already sent this user a friend request")
             return undefined

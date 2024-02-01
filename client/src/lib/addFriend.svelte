@@ -1,15 +1,16 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
     import { sendRequest } from '../services/request';
     import { userStore } from "../store";
 
+    export let open = false;
+    let isVisible = false;
+    $: isVisible = open
     userStore.useLocalStorage();
 
-    let open = true;
     let email = '';
   
     function closeModal() {
-      open = false;
+      isVisible = false;
     }
   
     async function addFriend() {
@@ -35,7 +36,18 @@
     }
 
   </script>
-  
+
+{#if isVisible}
+  <div class="modal" on:click={handleBackdropClick}>
+    <div class="modal-content" on:click={stopPropagation}>
+      <button class="close-button" on:click={closeModal} aria-label="Close modal">+</button>
+      <h2>ADD FRIEND</h2>
+      <input type="email" placeholder="Friend's email" bind:value={email} />
+      <button id="addFriendButton" on:click={addFriend} disabled={!email}>Add Friend</button>
+    </div>
+  </div>
+{/if}
+
   <style>
     .modal {
       position: fixed;
@@ -102,13 +114,3 @@
         font-size: 40px;
     }
   </style>
-  {#if open}
-    <div class="modal" on:click={handleBackdropClick}>
-      <div class="modal-content" on:click={stopPropagation}>
-        <button class="close-button" on:click={closeModal} aria-label="Close modal">+</button>
-        <h2>ADD FRIEND</h2>
-        <input type="email" placeholder="Friend's email" bind:value={email} />
-        <button id="addFriendButton" on:click={addFriend} disabled={!email}>Add Friend</button>
-      </div>
-    </div>
-  {/if}

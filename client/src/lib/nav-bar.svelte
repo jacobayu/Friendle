@@ -30,6 +30,10 @@
     showFriends = true;
   }
 
+  $: if(showAddFriend){
+    openAddFriend();
+  }
+
   async function getRequests(){
     const id = $userStore._id 
     const pendingRequests = await getPendingFriendRequests(id)
@@ -58,6 +62,7 @@
 
   function openAddFriend() {
     showAddFriend = true;
+    console.log(showAddFriend)
   }
 
   function closeAddFriend() {
@@ -104,6 +109,7 @@
       showMenu = false;
       showRequests = false;
       showFriends = false;
+      showAddFriend = false;
     }
   }
 
@@ -111,9 +117,7 @@
   
 <Hamburger toggle={toggleMenu} />
 
-{#if showAddFriend}
-  <AddFriendModal on:close={closeAddFriend} />
-{/if}
+<AddFriendModal open={showAddFriend}/>
 
 {#if showMenu && $userStore}
   <div class="dashboard">
