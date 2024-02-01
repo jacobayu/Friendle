@@ -1,11 +1,12 @@
 <script>
     import { sendRequest } from '../services/request';
     import { userStore } from "../store";
+    import { onMount } from 'svelte';
+
 
     export let open = false;
     let isVisible = false;
     $: isVisible = open
-    userStore.useLocalStorage();
 
     let email = '';
   
@@ -34,6 +35,10 @@
     function handleBackdropClick() {
         closeModal();
     }
+
+    onMount( () =>{
+      userStore.useLocalStorage();
+    });
 
   </script>
 
